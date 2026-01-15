@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa Ambiental - Salvador</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; width: 100%; } /* O mapa precisa de altura para aparecer */
+        body { font-family: sans-serif; padding: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Monitoramento Geográfico de Salvador</h2>
+    <p>Este é um protótipo para visualização de dados ambientais.</p>
+    
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Criamos o mapa e focamos no centro de Salvador
+        var map = L.map('map').setView([-12.97, -38.50], 12);
+
+        // Escolhemos o "desenho" do mapa (OpenStreetMap)
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Colocamos um marcador em um local estratégico
+        L.marker([-12.97, -38.50]).addTo(map)
+            .bindPopup('Centro de Salvador - Ponto Base.')
+            .openPopup();
+    </script>
+</body>
+</html>
