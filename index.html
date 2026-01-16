@@ -30,28 +30,32 @@
             .bindPopup('Centro de Salvador - Ponto Base.')
             .openPopup();
             // 1. Buscamos o arquivo que você subiu
-fetch('bairros_salvador.json')
-    .then(response => response.json()) // 2. Convertemos o texto em dados de mapa
+        fetch('bairros_salvador.json')
+    .then(response => {
+        if (!response.ok) throw new Error('Arquivo não encontrado');
+        return response.json();
+    })
     .then(data => {
-        // 3. Desenhamos o GeoJSON no mapa com um estilo legal
+        console.log('Dados carregados com sucesso:', data); // Isso ajuda a debugar no F12
+
         L.geoJSON(data, {
             style: function (feature) {
                 return {
-                    color: '#2ecc71',      // Cor da borda (Verde ambiental)
-                    weight: 2,             // Espessura da linha
-                    fillColor: '#2ecc71',  // Cor do preenchimento
-                    fillOpacity: 0.2       // Transparência (0 a 1)
+                    color: "#003399",      // Borda azul escura
+                    weight: 2,
+                    fillColor: "#3388ff",  // Preenchimento azul
+                    fillOpacity: 0.4       // Deixa mais visível
                 };
             },
             onEachFeature: function (feature, layer) {
-                // 4. Se o seu arquivo tiver o nome do bairro, ele aparece no clique
-                if (feature.properties && feature.properties.nome) {
-                    layer.bindPopup("Bairro: " + feature.properties.nome);
+                // Ajustado para o nome exato da sua coluna: NM_BAIRROS
+                if (feature.properties && feature.properties.NM_BAIRROS) {
+                    layer.bindPopup("<strong>Bairro:</strong> " + feature.properties.NM_BAIRROS);
                 }
             }
         }).addTo(map);
     })
-    .catch(error => console.error('Erro ao carregar os bairros:', error));
+    .catch(error => console.error('Erro na carga do mapa:', error));
     </script>
 </body>
 </html>
