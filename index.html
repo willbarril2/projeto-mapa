@@ -29,6 +29,29 @@
         L.marker([-12.97, -38.50]).addTo(map)
             .bindPopup('Centro de Salvador - Ponto Base.')
             .openPopup();
+            // 1. Buscamos o arquivo que você subiu
+fetch('bairros_salvador.json')
+    .then(response => response.json()) // 2. Convertemos o texto em dados de mapa
+    .then(data => {
+        // 3. Desenhamos o GeoJSON no mapa com um estilo legal
+        L.geoJSON(data, {
+            style: function (feature) {
+                return {
+                    color: '#2ecc71',      // Cor da borda (Verde ambiental)
+                    weight: 2,             // Espessura da linha
+                    fillColor: '#2ecc71',  // Cor do preenchimento
+                    fillOpacity: 0.2       // Transparência (0 a 1)
+                };
+            },
+            onEachFeature: function (feature, layer) {
+                // 4. Se o seu arquivo tiver o nome do bairro, ele aparece no clique
+                if (feature.properties && feature.properties.nome) {
+                    layer.bindPopup("Bairro: " + feature.properties.nome);
+                }
+            }
+        }).addTo(map);
+    })
+    .catch(error => console.error('Erro ao carregar os bairros:', error));
     </script>
 </body>
 </html>
